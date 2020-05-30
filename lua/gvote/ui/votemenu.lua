@@ -1,3 +1,6 @@
+pcall(include, "autorun/translation.lua")
+local L = translation and translation.L or function(s) return s end
+
 local PANEL = {}
 
 local itemColors =
@@ -50,7 +53,7 @@ function PANEL:Init ()
 	
 	self.Items = {}
 	self.CancelItem = vgui.Create ("GLabelX", self)
-	self.CancelItem:SetText ("0. Cancel")
+	self.CancelItem:SetText (L("0. Cancel"))
 	self.CancelItem:SetFont ("DermaDefaultBold")
 	self.CancelAlphaController = Gooey.AlphaController ()
 	self.CancelAlphaController:SetAlpha (128)
@@ -71,7 +74,7 @@ function PANEL:Init ()
 	self.CountdownAlphaController:SetTickController (self.TickProvider)
 	self.CountdownAlphaController:AddControl (self.CountdownLabel)
 	self.CreditsLabel = vgui.Create ("GLabel", self)
-	self.CreditsLabel:SetText (creditTexts [math.random (1, #creditTexts)])
+	self.CreditsLabel:SetText L(creditTexts [math.random (1, #creditTexts)])
 	self.CreditsLabel:SetFont ("DefaultBold")
 	self.CreditsAlphaController = Gooey.AlphaController ()
 	self.CreditsAlphaController:SetAlpha (0)
@@ -342,12 +345,12 @@ function PANEL:HookVote (vote)
 			if choiceId then
 				if SysTime () - (self.LastNotificationTimes [userId] or 0) > 1 then
 					self.LastNotificationTimes [userId] = SysTime ()
-					notification.AddLegacy (name .. " voted for \"" .. text .. "\"!", NOTIFY_HINT, 3)
+					notification.AddLegacy (L("%s voted for \%s\!"):format(tostring(name),tostring(text)), NOTIFY_HINT, 3) ))
 					if userId ~= GLib.GetLocalId () then
 						surface.PlaySound ("buttons/button9.wav")
 					end
 				end
-				MsgN (name .. " voted for \"" .. text .. "\"!")
+				MsgN (L("%s voted for \%s\!"):format(tostring(name),tostring(text)))
 			end
 		end
 	)
